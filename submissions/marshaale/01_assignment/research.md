@@ -45,6 +45,35 @@ A machine needs data to learn and make predictions, so every data is raw and mes
 
 - `Communication & Deployment`
 
+## 3 Compare Supervised Learning and Unsupervised Learning
+
+| Supervised Learning                         | Unsupervised Learning                        |
+| ------------------------------------------- | -------------------------------------------- |
+| Learn from labeled data to make predictions | Find patterns or structure in unlabeled data |
+| Labeled data with inputs and outputs        | Unlabeled data with only inputs              |
+| Uses classification, regression             | Uses Clustering, dimensionality reduction    |
+| Uses known correct answers during training  | No explicit correct answers available        |
+
+### Supervised example
+
+Suppose you have a dataset with weather temperature and a rainy indicator. Rainy is the label and the output.
+
+The model learns from the dataset using the input and output columns.
+
+| temperature | rainy |
+| ----------- | ----- |
+| 35          | 0     |
+| 18          | 1     |
+| 20          | 1     |
+| 28          | 0     |
+
+### Unsupervised example
+
+Suppose you have a dataset of balls from different sports, such as football,tennis and etc.
+The model groups the balls based on their features without using labels, and then uses those groups to predict where new balls belong.
+
+<img src="unsupervised_example.webp" alt="Unsupervised example" width="250">
+
 ## 4 What causes Overfitting?
 
 <img src="overfitting_explanation.webp" alt="Overfitting explanation" width="250">
