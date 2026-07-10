@@ -168,52 +168,60 @@ The API will receive booking information as input and return:
   "adults": 2,
   "adr": 150
 }
+```
+## Example Output
 
+The API will return the prediction result together with the probability score.
 
-## Example Input:
-
+```json
 {
   "prediction": "Canceled",
   "probability": 0.82
 }
+```
 
-The API will load the best saved machine learning model from
-models/best_model.pkl 
+The API will load the best trained model from `models/best_model.pkl` and use the saved preprocessing pipeline to transform new booking information before making predictions.
 
 ---
 
 # 9. Repository Plan
 
+```text
 hotel-booking-ml-project/
-
-│
 ├── dataset/
 │   └── hotel_bookings.csv
-│
 ├── notebooks/
 │   ├── 01_data_cleaning_eda.ipynb
 │   └── 02_model_training.ipynb
-│
 ├── src/
 │   ├── preprocess.py
 │   └── train.py
-│
 ├── api/
 │   └── app.py
-│
 ├── models/
 │   └── best_model.pkl
-│
 ├── reports/
 │   └── project_report.pdf
-│
 ├── README.md
 ├── project_proposal.md
-└── requirements.txt 
+└── requirements.txt
+```
 
 ---
 
-##Conclusion
+# Run Commands (Planned)
 
-This project applies supervised and unsupervised machine learning techniques to real-world hotel booking data. The classification models will predict booking cancellations, while clustering methods will provide additional insights into customer booking patterns.
-The project also demonstrates feature engineering, feature selection, and model comparison to identify the most effective machine learning approach.
+Train the machine learning models, compare their performance, and save the best model.
+
+```bash
+python src/train.py
+```
+
+Start the FastAPI application locally.
+
+```bash
+uvicorn api.app:app --reload
+```
+
+
+
