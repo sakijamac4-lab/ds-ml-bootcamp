@@ -128,7 +128,7 @@ Including these variables would make the model learn the answer directly instead
 
 ---
 
-# 5. Algorithms You Plan to Train
+# 5. Algorithms  Plan to Train
 
 ### 1. Logistic Regression *(Bootcamp)*
 
@@ -266,6 +266,7 @@ maryan-dev-final-project/
 - **Problem Type:** Multiclass Classification
 - **Dataset Size:** 2,000 rows × 10 columns
 - **Target Variable:** `employment_status`
+
 - **Bootcamp Algorithms:** Logistic Regression, Decision Tree, Random Forest
 - **Self-Researched Algorithm:** XGBoost
 - **Optional Unsupervised Analysis:** K-Means Clustering
