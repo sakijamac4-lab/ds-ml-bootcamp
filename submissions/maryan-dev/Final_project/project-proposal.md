@@ -1,52 +1,177 @@
-# Final Project Proposal
+# 📊 Final Project Proposal
 
-## 1. Certificate Name
+---
 
-Maryan Mohamed Adam
+# 1. Certificate Name
 
-## 2. Project Title and Description
+**Maryan Mohamed Adam**
 
-**Title:** Machine Learning-Based Employment Status Prediction Using Somali Labour Force Data
+---
 
-Employment is one of the most pressing socioeconomic challenges in Somalia, with many young people and women facing unemployment or remaining outside the labour force entirely. This project builds a machine learning model that predicts an individual's employment status (Employed, Unemployed, or Not in Labour Force) from demographic and household characteristics. The tool is intended for use by government agencies, NGOs, and development organizations who need fast, data-driven insight into labour market patterns to design and target employment interventions, rather than waiting on slow manual survey analysis.
+# 2. Project Title and Description
 
-## 3. Problem Type
+## **Title**
+**Machine Learning-Based Employment Status Prediction Using Somali Labour Force Data**
 
-**Classification** — the target column, `employment_status`, has three categories (Employed, Unemployed, Not in Labour Force), so this is a multiclass classification problem.
+Employment is one of the most pressing socioeconomic challenges in Somalia, with many young people and women facing unemployment or remaining outside the labour force entirely.
 
-## 4. Dataset
+This project builds a machine learning model that predicts an individual's employment status (**Employed, Unemployed, or Not in Labour Force**) from demographic and household characteristics.
 
-- **Source:** `lfs_somalia_synthetic_2000.csv` — a synthetic Somali labour force dataset modeled on the structure of the Somali Labour Force Survey (SLFS 2019, Somalia National Bureau of Statistics / ILO: https://microdata.nbs.gov.so/index.php/catalog/57).
-- **Size:** 2,000 rows, 10 columns — meets the 1,000-row minimum.
-- **Target column:** `employment_status` — categorical, values are `Employed` (1,104 rows), `Unemployed` (541 rows), `Not in Labour Force` (355 rows). Classes are imbalanced, which will be addressed in the final project (class weighting / stratified sampling).
-- **Main features:**
-  - `age` — respondent's age in years
-  - `gender` — Male / Female
-  - `region` — one of 7 Somali regions (e.g., Banadir, Puntland, Somaliland)
-  - `education` — Primary, Secondary, Tertiary, Vocational, or missing (~25% missing, will be imputed/flagged)
-  - `marital_status` — Single, Married, Widowed, Divorced
-  - `sector` — industry sector of work (e.g., Trade, Agriculture, Fishing); mostly missing for non-workers, so it will be used only as a secondary/derived feature, not a core predictor
-- **Excluded features:** `hours_worked` and `monthly_wage_usd` will **not** be used as model inputs. Checking the data shows `hours_worked = 0` for every single non-Employed row and only for non-Employed rows — including either column would leak the answer directly into the model instead of letting it learn genuine patterns.
+The tool is intended for use by government agencies, NGOs, and development organizations that need fast, data-driven insight into labour market patterns to design and target employment interventions, rather than waiting on slow manual survey analysis.
 
-## 5. Algorithms You Plan to Train
+---
 
-1. **Logistic Regression** (bootcamp) — simple, interpretable multiclass baseline; good reference point before trying more complex models.
-2. **Decision Tree** (bootcamp) — a single interpretable tree that shows the exact split rules (e.g., age, education, region thresholds) driving a prediction, and serves as a direct comparison point for the ensemble-based Random Forest below.
-3. **Random Forest** (bootcamp) — handles the mix of categorical and numeric features well and captures nonlinear interactions (e.g., age × education × region) without heavy preprocessing.
-4. **XGBoost** (self-researched) — gradient boosting typically gives the strongest accuracy on structured/tabular data like this and has built-in tools for handling class imbalance.
+# 3. Problem Type
 
-**Optional exploratory step (unsupervised, not one of the four compared models):** Before training the classifiers above, **K-Means clustering** will be applied to the feature set (age, education, region, gender, marital_status) to explore natural demographic segments in the population — for example, groups that combine low education with high concentration in the "Not in Labour Force" class. This is exploratory only: because K-Means has no access to `employment_status` during training, its output (cluster IDs) is not directly comparable to the three real employment classes using classification metrics like F1, so it will not be scored against Macro F1 or included as one of the four required algorithms. It will instead be evaluated separately using Silhouette Score, and used only to inform feature engineering and EDA insights for the report.
+> **Classification**
 
-## 6. Evaluation Plan
+The target column, **`employment_status`**, has three categories:
 
-- **Metrics:** Accuracy, Precision, Recall, and Macro F1-Score, plus a confusion matrix for each model.
-- **Selection metric:** **Macro F1-Score** will decide the best model, because the three employment classes are imbalanced (over half the data is "Employed") and Macro F1 weighs all three classes equally rather than letting the majority class dominate the score.
+- Employed
+- Unemployed
+- Not in Labour Force
 
-## 7. Deployment Sketch
+Therefore, this is a **multiclass classification** problem.
 
-- **Framework:** FastAPI
-- **Endpoint:** `POST /predict`
-- **Accepts (JSON):**
+---
+
+# 4. Dataset
+
+### Source
+
+`lfs_somalia_synthetic_2000.csv`
+
+Synthetic Somali labour force dataset modeled on the structure of the **Somali Labour Force Survey (SLFS 2019)**.
+
+Reference:
+
+https://microdata.nbs.gov.so/index.php/catalog/57
+
+### Dataset Information
+
+| Item | Description |
+|------|-------------|
+| **Rows** | 2,000 |
+| **Columns** | 10 |
+| **Target** | `employment_status` |
+| **Problem Type** | Multiclass Classification |
+
+### Target Distribution
+
+| Class | Rows |
+|------|------:|
+| Employed | 1,104 |
+| Unemployed | 541 |
+| Not in Labour Force | 355 |
+
+Classes are imbalanced, which will be addressed using:
+
+- Class weighting
+- Stratified sampling
+
+### Main Features
+
+- **`age`** — respondent's age in years
+- **`gender`** — Male / Female
+- **`region`** — one of 7 Somali regions (e.g., Banadir, Puntland, Somaliland)
+- **`education`** — Primary, Secondary, Tertiary, Vocational, or missing (~25% missing, will be imputed/flagged)
+- **`marital_status`** — Single, Married, Widowed, Divorced
+- **`sector`** — industry sector of work (e.g., Trade, Agriculture, Fishing); mostly missing for non-workers, so it will be used only as a secondary/derived feature, not a core predictor.
+
+### Excluded Features
+
+The following variables will **not** be used as model inputs:
+
+- `hours_worked`
+- `monthly_wage_usd`
+
+Checking the data shows that **`hours_worked = 0`** for every non-employed record and only for non-employed records. Including either feature would leak the answer directly into the model instead of allowing it to learn genuine patterns.
+
+---
+
+# 5. Algorithms You Plan to Train
+
+### 1. Logistic Regression *(Bootcamp)*
+
+- Simple and interpretable multiclass baseline.
+- Good reference point before trying more complex models.
+
+### 2. Decision Tree *(Bootcamp)*
+
+- Produces an interpretable tree.
+- Shows the exact split rules (age, education, region, etc.).
+- Provides a comparison against Random Forest.
+
+### 3. Random Forest *(Bootcamp)*
+
+- Handles mixed categorical and numerical features.
+- Captures nonlinear interactions.
+- Requires minimal preprocessing.
+
+### 4. XGBoost *(Self-Researched)*
+
+- Gradient boosting model.
+- Typically achieves the highest accuracy on structured/tabular datasets.
+- Includes built-in support for handling class imbalance.
+
+### Optional Exploratory Step (Unsupervised)
+
+Before classifier training, **K-Means Clustering** will be applied using:
+
+- age
+- education
+- region
+- gender
+- marital_status
+
+Purpose:
+
+- Explore natural demographic segments.
+- Support feature engineering.
+- Improve exploratory data analysis (EDA).
+
+Since K-Means does **not** use the target variable (`employment_status`), it will **not** be compared using Accuracy, Precision, Recall, or Macro F1.
+
+Instead, it will be evaluated using:
+
+- **Silhouette Score**
+
+---
+
+# 6. Evaluation Plan
+
+### Metrics
+
+- Accuracy
+- Precision
+- Recall
+- Macro F1-Score
+- Confusion Matrix
+
+### Model Selection
+
+The best model will be selected using **Macro F1-Score**, because:
+
+- the classes are imbalanced,
+- Macro F1 evaluates every class equally,
+- it prevents the majority class ("Employed") from dominating the evaluation.
+
+---
+
+# 7. Deployment Sketch
+
+### Framework
+
+**FastAPI**
+
+### Endpoint
+
+```http
+POST /predict
+```
+
+### Input (JSON)
+
 ```json
 {
   "age": 28,
@@ -56,7 +181,9 @@ Employment is one of the most pressing socioeconomic challenges in Somalia, with
   "marital_status": "Single"
 }
 ```
-- **Returns (JSON):**
+
+### Output (JSON)
+
 ```json
 {
   "predicted_status": "Unemployed",
@@ -69,9 +196,11 @@ Employment is one of the most pressing socioeconomic challenges in Somalia, with
 }
 ```
 
-## 8. Repository Plan
+---
 
-```
+# 8. Repository Plan
+
+```text
 maryan-dev-final-project/
 ├── dataset/
 │   └── lfs_somalia_synthetic_2000.csv
